@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Buffers;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
-using BoysheO.Extensions;
 
 namespace Number2Chinese
 {
