@@ -8,7 +8,7 @@ using BoysheO.Extensions;
 namespace Number2Chinese
 {
     /// <summary>
-    /// 最大单位支持到极
+    /// 最大单位支持到极；目前只做了小写中文读数逻辑
     /// </summary>
     public static class Number2Chinese
     {
