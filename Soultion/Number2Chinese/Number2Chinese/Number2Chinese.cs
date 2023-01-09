@@ -24,7 +24,6 @@ namespace Number2Chinese
             '千',
         };
 
-
         public static readonly string[] LowercaseBigUnitLetters =
         {
             "个",
@@ -117,7 +116,7 @@ namespace Number2Chinese
                     if (order > 0)
                     {
                         var bigUnit = LowercaseBigUnitLetters[order].AsSpan();
-                        for (int i = 0; i < bigUnit.Length; i++)
+                        for (int i = 0, len = bigUnit.Length; i < len; i++)
                         {
                             chars[charsCount] = bigUnit[i];
                             charsCount++;
@@ -130,7 +129,7 @@ namespace Number2Chinese
 
             unsafe
             {
-                fixed (char* c = chars.Slice(0,charsCount))
+                fixed (char* c = chars.Slice(0, charsCount))
                 {
                     return new string(c);
                 }
