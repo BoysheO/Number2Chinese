@@ -44,9 +44,81 @@ namespace Number2Chinese
         /// <summary>
         /// 按万进中国习惯，按需读零输出读数。
         /// </summary>
-        public static string ToLowercaseReadingStringInChinese(ulong number)
+        public static string ToLowercaseReadingString(ulong number)
         {
-            if (number < 10) return LowercaseLetters[(int)number].ToString();
+            Span<char> buffer = stackalloc char[59];
+            var bufferCount = ToLowercaseReadingStringAsBuff(number, buffer);
+            unsafe
+            {
+                fixed (char* c = buffer.Slice(0, bufferCount))
+                {
+                    return new string(c);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 按万进中国习惯，按需读零输出读数。
+        /// </summary>
+        public static string ToLowercaseReadingString(long number)
+        {
+            bool isLess0 = number < 0;
+            int buffCount;
+            if (isLess0)
+            {
+                number = -number;
+                buffCount = 60;
+            }
+            else
+            {
+                buffCount = 59;
+            }
+
+            Span<char> buffer = stackalloc char[buffCount];
+            if (isLess0)
+            {
+                buffer[0] = '负';
+            }
+
+            var subBuffer = isLess0 ? buffer.Slice(1, 59) : buffer;
+            var subBufferCount = ToLowercaseReadingStringAsBuff(unchecked((ulong)number), subBuffer);
+            unsafe
+            {
+                fixed (char* c = buffer.Slice(0, subBufferCount + (isLess0 ? 1 : 0)))
+                {
+                    return new string(c);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 按万进中国习惯，按需读零输出读数。
+        /// </summary>
+        public static string ToLowercaseReadingString(int number)
+        {
+            return ToLowercaseReadingString((long)number);
+        }
+
+        /// <summary>
+        /// 按万进中国习惯，按需读零输出读数。
+        /// </summary>
+        public static string ToLowercaseReadingString(uint number)
+        {
+            return ToLowercaseReadingString((ulong)number);
+        }
+
+        /// <summary>
+        /// 按万进中国习惯，按需读零输出读数。
+        /// </summary>
+        private static int ToLowercaseReadingStringAsBuff(ulong number, Span<char> resultBuffer)
+        {
+            if (resultBuffer.Length != 59)
+                throw new ArgumentOutOfRangeException(nameof(resultBuffer), "it's len must be 59");
+            if (number < 10)
+            {
+                resultBuffer[0] = LowercaseLetters[(int)number];
+                return 1;
+            }
 
             #region 拆解数位
 
@@ -65,7 +137,7 @@ namespace Number2Chinese
 
             #endregion
 
-            Span<char> chars = stackalloc char[59]; //ulong型最多使用这么多字
+            Span<char> chars = resultBuffer; //ulong型最多使用这么多字
             var charsCount = 0;
             var p = 0;
             bool is0LastDigit = false;
@@ -127,13 +199,7 @@ namespace Number2Chinese
                 p++;
             }
 
-            unsafe
-            {
-                fixed (char* c = chars.Slice(0, charsCount))
-                {
-                    return new string(c);
-                }
-            }
+            return charsCount;
         }
     }
 }

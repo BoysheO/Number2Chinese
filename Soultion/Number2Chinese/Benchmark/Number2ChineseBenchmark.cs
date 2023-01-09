@@ -22,13 +22,13 @@ namespace Benchmark.ByteExtensions
         [Benchmark]
         public string ToLowercaseReadingStringInChinese()
         {
-            return Number2Chinese.Number2Chinese.ToLowercaseReadingStringInChinese(Source);
+            return Number2Chinese.Number2Chinese.ToLowercaseReadingString(Source);
         }
 
-        [Benchmark]
-        public string ToLowercaseReadingStringInChineseLess10()
-        {
-            return Number2Chinese.Number2Chinese.ToLowercaseReadingStringInChinese(SourceLess10);
-        }
+        // [Benchmark]
+        // public string ToLowercaseReadingStringInChineseLess10()
+        // {
+        //     return Number2Chinese.Number2Chinese.ToLowercaseReadingString(SourceLess10);
+        // }
     }
 }
