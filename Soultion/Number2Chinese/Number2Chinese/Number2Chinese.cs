@@ -7,9 +7,7 @@ namespace Number2Chinese
     /// </summary>
     public static class Number2Chinese
     {
-        // public static readonly string UppercaseLetters = "零壹贰叁肆伍陆柒捌玖";
-
-        public static readonly string LowercaseLetters = "零一二三四五六七八九";
+        public const string LowercaseLetters = "零一二三四五六七八九";
 
         public static readonly char[] LowercaseLittleUnitLetters =
         {
@@ -160,6 +158,7 @@ namespace Number2Chinese
                 //如果首位是一十则缩略成十
                 if (p == 0 && digit == 1 && littleUnitOrder == 1)
                 {
+                    //do nothing
                 }
                 else
                 {
